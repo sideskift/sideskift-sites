@@ -50,6 +50,36 @@ class Filter
         return $trueFalseString;
     }
 
+    /**
+     * Function that calls a boolean filter, where the filter is a string of value 'true' or 'false'
+     * This is a way to create an event that can extend checks if a user has access to a post etc
+     * The filterTag is the name of the filter, the filterArguments are additional arguments to the WordPress filter
+     * @param string $filterTag
+     * @param bool $initialValue
+     * @param mixed ...$filterArguments
+     * @return bool
+     */
+    static function applyBoolFilter(string $filterTag, bool $initialValue = false, ...$filterArguments) {
+
+        $boolValue = $initialValue;
+        $boolString = $initialValue ? Filter::trueString() : Filter::falseString();
+
+        $filterArgs = array();
+        $filterArgs[] = $filterTag;
+        $filterArgs[] = &$boolString;
+
+        if (!empty($filterArguments)) {
+            foreach($filterArguments as &$argument) {
+                $filterArgs[] = &$argument;
+            }
+        }
+
+        call_user_func_array('apply_filters', $filterArgs);
+
+        $boolValue = $boolString == Filter::trueString() ? true : false;
+
+        return $boolValue;
+    }
 
     /**
      * Determines if the value of the filter is unresolved and still needs to be handled
