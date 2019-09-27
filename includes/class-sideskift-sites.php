@@ -111,6 +111,17 @@ class Sideskift_Sites {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sideskift-sites-i18n.php';
 
+        /**
+         * include plugin shortcode
+         */
+        require_once plugin_dir_path( dirname( __FILE__) ) . 'includes/class-sideskift-sites-shortcode.php';
+        require_once plugin_dir_path( dirname( __FILE__) ) . 'includes/class-sideskift-sites-shortcodes.php';
+
+        /**
+         * include plugin filters and filter stubs
+         */
+
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -128,6 +139,8 @@ class Sideskift_Sites {
          */
         include_once plugin_dir_path( dirname(__FILE__) ) . 'extensions/extensionsIncluder.php';
 
+
+        //TODO: Her loades actions og filters.... Måske skal du også loade shortcodes?
 		$this->loader = new Sideskift_Sites_Loader();
 
 	}

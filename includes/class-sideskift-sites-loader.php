@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Register all actions and filters for the plugin
  *
@@ -41,6 +40,15 @@ class Sideskift_Sites_Loader {
 	 */
 	protected $filters;
 
+    /**
+     * Type for all shortcodes registered by the plugin
+     *
+     * @since   1.0.0
+     * @access  protected
+     * @var     Sideskift_Sites_Shortcodes  Class that registres the shortcodes used by the plugin
+     */
+	protected $shortcodes;
+
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
@@ -49,7 +57,13 @@ class Sideskift_Sites_Loader {
 	public function __construct() {
 
 		$this->actions = array();
+
 		$this->filters = array();
+
+		//todo: Opret filtre...  HMM Hvor får du wp_post fra her?
+		//½this->$this->add_filter();
+
+		$this->shortcodes = new Sideskift_Sites_Shortcodes();
 
 	}
 
