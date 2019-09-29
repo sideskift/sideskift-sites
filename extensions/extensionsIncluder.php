@@ -9,3 +9,5 @@
 // include the extensions files
 include_once plugin_dir_path( dirname(__FILE__) ) . 'extensions/plugins/toolset/types.php';
 include_once plugin_dir_path( dirname(__FILE__) ) . 'extensions/plugins/memberpress/access.php';
+
+include_once plugin_dir_path( dirname(__FILE__) ) . 'extensions/wp/class-sideskift-sites-post.php';

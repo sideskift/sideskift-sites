@@ -9,104 +9,42 @@
 
 namespace sideskift_sites\includes;
 
+use sideskift_sites\extensions\wp\Post;
 
 class Filter
 {
     /**
-     * Stub for dk_sideskift_isPostProtected filter that takes a string of either 'true' or 'false' and a postId as a second parameter.
-     * If a feature is implemented that needs to test if a specific post is protected this filter should be implemented
-     * This filter may be applied in filters like hasAccessToPost to test if the post should be controlled for access
-     * @param string $trueFalseString
-     * @param \WP_Post $wp_post
-     * @return string
+     * Stub for dk_sideskift_isPostProtected filter that takes an instance of \sideskift_sites\extensions\wp\Post.
+     * This filter is called by the constructor of the \sideskift_sites\extensions\wp\Post class.
+     * Effectivly
+     * @param \sideskift_sites\extensions\wp\Post $post
+     * @return \sideskift_sites\extensions\wp\Post
      */
-    static function isPostProtected($trueFalseString, $wp_post) {
+    static function isPostProtected($post) {
 
-        // Start your implementation by testing if the filter should be performed.
-        if (Filter::unresolvedFilter($trueFalseString)) {
-            // Perform filter and return the value
-            return $trueFalseString;
-        }
+        // Determine if the given post is protected by a membership or other system and then set the boolean value
+        // on the post object passed as parameter
 
-        // Another filter has already resolved that the post is protected so simply return the value
-        return $trueFalseString;
+        // This is a stub method so we simple set the existing value as it is
+        $post->setIsProtectedFromFilter($post->isProtected());
+
+        return $post;
     }
 
     /**
      * Stub for dk_sideskift_hasAccessToPost filter that validates if a user has access to a postId. This
-     * @param string $trueFalseString
-     * @param \WP_Post $wp_post
-     * @return string
+     * @param \sideskift_sites\extensions\wp\Post $post
+     * @return \sideskift_sites\extensions\wp\Post
      */
-    static function hasAccessToPost($trueFalseString, $wp_post) {
+    static function hasAccessToPost($post) {
 
-        // Start your implementation by testing if the filter should be performed.
-        if (Filter::unresolvedFilter($trueFalseString)) {
-            // Perform checks to see if the user has access to the post and apply the
-            return $trueFalseString;
-        }
+        // Determine if the user has access to the post, or not and then try to set the access bool value on the
+        // post object. Please not that another filter may have given access and if so, this overrules a false
+        // value, on the object.
 
-        // Another filter has already resolved that the current user has access so simply return the value.
-        return $trueFalseString;
-    }
+        // This is a stub method so we simple set the existing value as it is
+        $post->setHasAccessFromFilter($post->hasAccessToPost());
 
-    /**
-     * Function that calls a boolean filter, where the filter is a string of value 'true' or 'false'
-     * This is a way to create an event that can extend checks if a user has access to a post etc
-     * The filterTag is the name of the filter, the filterArguments are additional arguments to the WordPress filter
-     * @param string $filterTag
-     * @param bool $initialValue
-     * @param mixed ...$filterArguments
-     * @return bool
-     */
-    static function applyBoolFilter(string $filterTag, bool $initialValue = false, ...$filterArguments) {
-
-        $boolValue = $initialValue;
-        $boolString = $initialValue ? Filter::trueString() : Filter::falseString();
-
-        $filterArgs = array();
-        $filterArgs[] = $filterTag;
-        $filterArgs[] = &$boolString;
-
-        if (!empty($filterArguments)) {
-            foreach($filterArguments as &$argument) {
-                $filterArgs[] = &$argument;
-            }
-        }
-
-        call_user_func_array('apply_filters', $filterArgs);
-
-        $boolValue = $boolString == Filter::trueString() ? true : false;
-
-        return $boolValue;
-    }
-
-    /**
-     * Determines if the value of the filter is unresolved and still needs to be handled
-     * @param string $trueFalseString
-     * @return bool
-     */
-    static function unresolvedFilter(string $trueFalseString) {
-        if ($trueFalseString == Filter::trueString()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Constant for a value that represents a boolean true
-     * @return string
-     */
-    static function trueString() {
-        return 'true';
-    }
-
-    /**
-     * Constant for a value that represents a boolean false
-     * @return string
-     */
-    static function falseString() {
-        return 'false';
+        return $post;
     }
 }

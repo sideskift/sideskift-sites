@@ -9,6 +9,9 @@
  * @subpackage Sideskift_Sites/includes
  */
 
+use sideskift_sites\includes\Filter;
+use sideskift_sites\includes\FilterTag;
+
 /**
  * Register all actions and filters for the plugin.
  *
@@ -60,8 +63,8 @@ class Sideskift_Sites_Loader {
 
 		$this->filters = array();
 
-		//todo: Opret filtre...  HMM Hvor får du wp_post fra her?
-		//½this->$this->add_filter();
+		//todo: Opret filter til isPostProtected og hasAccess, og sikre dig at filter og filter tags mm filer er included
+		//$this->add_filter(FilterTag::isPostProtected(), 'Filter')
 
 		$this->shortcodes = new Sideskift_Sites_Shortcodes();
 
