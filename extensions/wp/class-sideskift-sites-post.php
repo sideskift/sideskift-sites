@@ -64,8 +64,10 @@ class Post
 
     public function setHasAccessFromFilter(bool $hasAccess): void
     {
-        //Todo:
-        //if (!$hasAccess)
+        if ($this->hasAccessToPost() == false)
+        {
+            $this->setHasAccessToPost($hasAccess);
+        }
     }
 
     /**

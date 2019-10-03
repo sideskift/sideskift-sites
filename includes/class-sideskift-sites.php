@@ -139,8 +139,6 @@ class Sideskift_Sites {
          */
         include_once plugin_dir_path( dirname(__FILE__) ) . 'extensions/extensionsIncluder.php';
 
-
-        //TODO: Her loades actions og filters.... Måske skal du også loade shortcodes?
 		$this->loader = new Sideskift_Sites_Loader();
 
 	}
