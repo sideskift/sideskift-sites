@@ -22,6 +22,14 @@ class Post
     private $hasAccess   = false;
 
     /**
+     * @return \WP_Post
+     */
+    public function getWpPost(): \WP_Post
+    {
+        return $this->wp_post;
+    }
+
+    /**
      * @return bool
      */
     public function isProtected(): bool
@@ -81,6 +89,9 @@ class Post
         $this->testAccess();
     }
 
+    /**
+     * Test if the post is protected and if the user has access to the post, using filters
+     */
     public function testAccess(): void
     {
         // Test if the post is protected.

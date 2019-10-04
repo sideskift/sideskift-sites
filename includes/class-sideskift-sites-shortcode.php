@@ -204,10 +204,12 @@ class ConditionShortCode extends ShortCode {
         // Test if its a specific subclass
         $classname = $shortCode->getConditionClassName();
 
-        $reflection = new \ReflectionClass($classname);
+        if (class_exists($classname)) {
+            $reflection = new \ReflectionClass($classname);
 
-        if ($reflection->isSubclassOf(__CLASS__)) {
-            $shortCode = new $classname($atts, $content);
+            if ($reflection->isSubclassOf(__CLASS__)) {
+                $shortCode = new $classname($atts, $content);
+            }
         }
 
         return $shortCode->render();

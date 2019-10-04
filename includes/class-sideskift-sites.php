@@ -120,7 +120,8 @@ class Sideskift_Sites {
         /**
          * include plugin filters and filter stubs
          */
-
+        require_once plugin_dir_path( dirname(__FILE__) ) . 'includes/class-sideskift-sites-filtertag.php';
+        require_once plugin_dir_path( dirname(__FILE__) ) . 'includes/class-sideskift-sites-filter.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
