@@ -63,9 +63,8 @@ class Sideskift_Sites_Loader {
 
 		$this->filters = array();
 
-		//todo: test at filteret virker...
-		$this->add_filter(FilterTag::isPostProtected(), '\sideskift_sites\includes\Filter', 'isPostProtected');
-		$this->add_filter(FilterTag::hasAccessToPost(), '\sideskift_sites\includes\Filter', 'hasAccessToPost');
+		$this->add_filter(FilterTag::isPostProtected, '\sideskift_sites\includes\Filter', 'isPostProtected');
+		$this->add_filter(FilterTag::hasAccessToPost, '\sideskift_sites\includes\Filter', 'hasAccessToPost');
 
         $this->shortcodes = new Sideskift_Sites_Shortcodes();
 

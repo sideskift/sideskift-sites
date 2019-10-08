@@ -16,11 +16,6 @@ namespace sideskift_sites\includes;
  */
 class FilterTag
 {
-    static function isPostProtected() {
-        return 'dk_sideskift_isPostProtected';
-    }
-
-    static function hasAccessToPost() {
-        return 'dk_sideskift_hasAccessToPost';
-    }
+    const isPostProtected = 'dk_sideskift_isPostProtected';
+    const hasAccesstoPost = 'dk_sideskift_hasAccessToPost';
 }

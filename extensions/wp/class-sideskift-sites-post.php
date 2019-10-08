@@ -95,10 +95,10 @@ class Post
     public function testAccess(): void
     {
         // Test if the post is protected.
-        apply_filters(FilterTag::isPostProtected(), $this);
+        apply_filters(FilterTag::isPostProtected, $this);
 
         if ($this->isProtected()) {
-            apply_filters(FilterTag::hasAccessToPost(), $this);
+            apply_filters(FilterTag::hasAccessToPost, $this);
         } else {
             $this->setHasAccessToPost(true);
         }
