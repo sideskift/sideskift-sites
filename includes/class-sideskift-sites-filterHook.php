@@ -14,7 +14,7 @@ namespace sideskift_sites\includes;
  * Class FilterTags. Returns the tags used in filters used in the plugin
  * @package sideskift_sites\includes
  */
-class FilterTag
+class FilterHook
 {
     const isPostProtected = 'dk_sideskift_isPostProtected';
     const hasAccesstoPost = 'dk_sideskift_hasAccessToPost';

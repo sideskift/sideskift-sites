@@ -8,7 +8,7 @@
  */
 
 namespace sideskift_sites\extensions\wp;
-use sideskift_sites\includes\FilterTag;
+use sideskift_sites\includes\FilterHook;
 
 class Post
 {
@@ -95,10 +95,10 @@ class Post
     public function testAccess(): void
     {
         // Test if the post is protected.
-        apply_filters(FilterTag::isPostProtected, $this);
+        apply_filters(FilterHook::isPostProtected, $this);
 
         if ($this->isProtected()) {
-            apply_filters(FilterTag::hasAccessToPost, $this);
+            apply_filters(FilterHook::hasAccessToPost, $this);
         } else {
             $this->setHasAccessToPost(true);
         }

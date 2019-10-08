@@ -10,7 +10,7 @@
  */
 
 use sideskift_sites\includes\Filter;
-use sideskift_sites\includes\FilterTag;
+use sideskift_sites\includes\FilterHook;
 
 /**
  * Register all actions and filters for the plugin.
@@ -63,8 +63,8 @@ class Sideskift_Sites_Loader {
 
 		$this->filters = array();
 
-		$this->add_filter(FilterTag::isPostProtected, '\sideskift_sites\includes\Filter', 'isPostProtected');
-		$this->add_filter(FilterTag::hasAccessToPost, '\sideskift_sites\includes\Filter', 'hasAccessToPost');
+		$this->add_filter(FilterHook::isPostProtected, '\sideskift_sites\includes\Filter', 'isPostProtected');
+		$this->add_filter(FilterHook::hasAccessToPost, '\sideskift_sites\includes\Filter', 'hasAccessToPost');
 
         $this->shortcodes = new Sideskift_Sites_Shortcodes();
 
