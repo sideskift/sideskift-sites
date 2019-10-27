@@ -22,16 +22,43 @@ class Types {
      */
     static function GetFieldString(string $fieldSlug) {
 
+        return Types::GetFieldOutput($fieldSlug);
+
+    }
+
+    //TODO: Make sure there is a single point of contact to the types functions in case toolset decides to change their code
+    /*
+    static function GetFieldDateTimeStamp($fieldSlug) {
+        Types::GetFieldRawOutput();
+    }
+    */
+
+    /***
+     * Single point calling Types field render, incase they change this function.
+     * @param string $fieldSlug
+     * @param bool $useRaw - Types parameter option
+     * @return mixed|string
+     */
+    private static function GetFieldOutput(string $fieldSlug, bool $useRaw = false) {
+
         $fieldString = '';
         $post_Id     = \get_the_ID();
 
         if (!empty($post_Id) && strlen($fieldSlug) > 0) {
+
             if (function_exists('types_render_field')) {
-                $fieldString = \types_render_field($fieldSlug);
-            }
-            else {
+
+                $parameters = Array();
+
+                if ($useRaw) {
+                    $parameters = Array("output => raw");
+                }
+
+                $fieldString = \types_render_field($fieldSlug, $parameters);
+            } else {
                 $fieldString = Types::getPostFieldValue($fieldSlug);
             }
+
         }
 
         return $fieldString;
@@ -64,5 +91,4 @@ class Types {
     static function getPostFieldInt(string $fieldSlug, string $toolsetPrefix = Types::field_prefix) {
         return intval(Types::getPostFieldValue($fieldSlug, $toolsetPrefix));
     }
-
 }
