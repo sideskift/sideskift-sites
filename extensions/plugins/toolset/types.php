@@ -10,10 +10,7 @@ namespace sideskift_sites\extensions\plugins\toolset;
 class Types {
 
     const field_prefix = "wpcf-";
-
-    static function hello() {
-        echo "Hello";
-    }
+    const fieldOutput_raw = Array('output' => 'raw');
 
     /**
      * @description Returns the value of a custom field, for the current post
@@ -23,42 +20,66 @@ class Types {
     static function GetFieldString(string $fieldSlug) {
 
         return Types::GetFieldOutput($fieldSlug);
-
     }
 
-    //TODO: Make sure there is a single point of contact to the types functions in case toolset decides to change their code
-    /*
-    static function GetFieldDateTimeStamp($fieldSlug) {
-        Types::GetFieldRawOutput();
-    }
-    */
+    /**
+     * Gets the time value of a toolset date field. Using the toolset ouput function if possible.
+     * @param $fieldSlug
+     * @return int
+     */
+    static function GetFieldDateTime($fieldSlug) : int {
 
-    /***
-     * Single point calling Types field render, incase they change this function.
+        $output = Types::GetFieldOutput($fieldSlug, Types::fieldOutput_raw);
+
+        if (is_numeric($output)) {
+            return intval($output);
+        }
+
+        return 0;
+    }
+
+    /**
+     * @description Returns the post_meta value as an integer, if possible if not possible then 0 is returned
      * @param string $fieldSlug
-     * @param bool $useRaw - Types parameter option
+     * @param string $toolsetPrefix
+     * @return int
+     */
+    static function getPostFieldInt(string $fieldSlug, string $toolsetPrefix = Types::field_prefix) {
+
+        $value = Types::getPostFieldValue($fieldSlug, $toolsetPrefix);
+
+        if (is_numeric($value)) {
+            return intval($value);
+        }
+
+        return 0;
+    }
+
+    // ------------------------------------ Private below ----------------------------------------------------------
+
+    /**
+     * Gets the output of a toolset Field.
+     * @param string $fieldSlug
+     * @param array $outputParam
+     * @param Int|null $forPostId
      * @return mixed|string
      */
-    private static function GetFieldOutput(string $fieldSlug, bool $useRaw = false) {
+    private static function GetFieldOutput(string $fieldSlug, $outputParam = Array(), Int $forPostId = null) {
 
         $fieldString = '';
-        $post_Id     = \get_the_ID();
+
+        $post_Id = $forPostId;
+        if (is_null($post_Id)) {
+            $post_Id = \get_the_ID();
+        }
 
         if (!empty($post_Id) && strlen($fieldSlug) > 0) {
 
             if (function_exists('types_render_field')) {
-
-                $parameters = Array();
-
-                if ($useRaw) {
-                    $parameters = Array("output => raw");
-                }
-
-                $fieldString = \types_render_field($fieldSlug, $parameters);
+                $fieldString = \types_render_field($fieldSlug, $outputParam);
             } else {
                 $fieldString = Types::getPostFieldValue($fieldSlug);
             }
-
         }
 
         return $fieldString;
@@ -71,7 +92,7 @@ class Types {
      * @param bool $singleValue - Set to false if the field value is an array
      * @return mixed|string
      */
-    static function getPostFieldValue(string $fieldSlug, string $toolsetPrefix = Types::field_prefix, bool $singleValue = true) {
+    private static function getPostFieldValue(string $fieldSlug, string $toolsetPrefix = Types::field_prefix, bool $singleValue = true) {
         $toolsetFieldSlug = $toolsetPrefix . $fieldSlug;
         $postId = \get_the_ID();
 
@@ -80,15 +101,5 @@ class Types {
         }
 
         return "";
-    }
-
-    /**
-     * @description Returns the post_meta value as an integer usefull for date fields
-     * @param string $fieldSlug
-     * @param string $toolsetPrefix
-     * @return int
-     */
-    static function getPostFieldInt(string $fieldSlug, string $toolsetPrefix = Types::field_prefix) {
-        return intval(Types::getPostFieldValue($fieldSlug, $toolsetPrefix));
     }
 }
