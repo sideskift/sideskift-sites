@@ -27,7 +27,7 @@ class Types {
      * @param $fieldSlug
      * @return int
      */
-    static function GetFieldDateTime($fieldSlug) : int {
+    static function GetFieldTimeStamp($fieldSlug) : int {
 
         $output = Types::GetFieldOutput($fieldSlug, Types::fieldOutput_raw);
 
