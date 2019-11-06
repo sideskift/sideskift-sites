@@ -18,8 +18,8 @@ class Post
      */
     private $wp_post;
 
-    private $isProtected = false;
-    private $hasAccess   = false;
+    private $isProtected        = false;
+    private $hasAccess          = false;
 
     /**
      * @return \WP_Post
@@ -70,12 +70,27 @@ class Post
         $this->hasAccess = $hasAccess;
     }
 
+    /**
+     * Method to set the hasAccess parameter from a filter.
+     * If a filter has already decided that the user has access, another filter with lower priority is not able to
+     * revoke the access
+     * @param bool $hasAccess
+     */
     public function setHasAccessFromFilter(bool $hasAccess): void
     {
         if ($this->hasAccessToPost() == false)
         {
             $this->setHasAccessToPost($hasAccess);
         }
+    }
+
+    /**
+     * Returns if the user is a member of the post
+     * @return bool
+     */
+    public function isUserPostMember(): bool
+    {
+        return $this->isProtected() && $this->hasAccessToPost() && is_user_logged_in();
     }
 
     /**
