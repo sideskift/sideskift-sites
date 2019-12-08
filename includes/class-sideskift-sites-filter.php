@@ -20,13 +20,13 @@ class Filter
      * @param \sideskift_sites\extensions\wp\Post $post
      * @return \sideskift_sites\extensions\wp\Post
      */
-    static function isPostProtected($post) {
+    static function isPostMembershipProtected($post) {
 
         // Determine if the given post is protected by a membership or other system and then set the boolean value
         // on the post object passed as parameter
 
         // This is a stub method so we simple set the existing value as it is
-        $post->setIsProtectedFromFilter($post->isProtected());
+        $post->setIsMembershipProtectedFromFilter($post->isMembershipProtected());
 
         return $post;
     }
@@ -36,14 +36,14 @@ class Filter
      * @param \sideskift_sites\extensions\wp\Post $post
      * @return \sideskift_sites\extensions\wp\Post
      */
-    static function hasAccessToPost($post) {
+    static function hasMembershipAccessToPost($post) {
 
         // Determine if the user has access to the post, or not and then try to set the access bool value on the
         // post object. Please not that another filter may have given access and if so, this overrules a false
         // value, on the object.
 
         // This is a stub method so we simple set the existing value as it is
-        $post->setHasAccessFromFilter($post->hasAccessToPost());
+        $post->setHasMembershipAccessFromFilter($post->hasMembershipAccessToPost());
 
         return $post;
     }

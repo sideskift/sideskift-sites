@@ -22,11 +22,11 @@ class Post
     /**
      * @var bool
      */
-    private $isProtected        = false;
+    private $isMembershipProtected        = false;
     /**
      * @var bool
      */
-    private $hasAccess          = false;
+    private $hasMembershipAccess          = false;
 
     /**
      * @return \WP_Post
@@ -39,58 +39,58 @@ class Post
     /**
      * @return bool
      */
-    public function isProtected(): bool
+    public function isMembershipProtected(): bool
     {
-        return $this->isProtected;
+        return $this->isMembershipProtected;
     }
 
     /**
      *
-     * @param bool $isProtected
+     * @param bool $isMembershipProtected
      */
-    private function setIsProtected(bool $isProtected): void
+    private function setIsMembershipProtected(bool $isMembershipProtected): void
     {
-        $this->isProtected = $isProtected;
+        $this->isMembershipProtected = $isMembershipProtected;
     }
 
     /**
-     * @param bool $isProtected
+     * @param bool $isMembershipProtected
      */
-    public function setIsProtectedFromFilter(bool $isProtected): void
+    public function setIsMembershipProtectedFromFilter(bool $isMembershipProtected): void
     {
-        if ($this->isProtected() == false)
+        if ($this->isMembershipProtected() == false)
         {
-            $this->setIsProtected($isProtected);
+            $this->setIsMembershipProtected($isMembershipProtected);
         }
     }
 
     /**
      * @return bool
      */
-    public function hasAccessToPost(): bool
+    public function hasMembershipAccessToPost(): bool
     {
-        return $this->hasAccess;
+        return $this->hasMembershipAccess;
     }
 
     /**
-     * @param bool $hasAccess
+     * @param bool $hasMembershipAccess
      */
-    private function setHasAccessToPost(bool $hasAccess): void
+    private function setHasMembershipAccessToPost(bool $hasMembershipAccess): void
     {
-        $this->hasAccess = $hasAccess;
+        $this->hasMembershipAccess = $hasMembershipAccess;
     }
 
     /**
      * Method to set the hasAccess parameter from a filter.
      * If a filter has already decided that the user has access, another filter with lower priority is not able to
      * revoke the access
-     * @param bool $hasAccess
+     * @param bool $hasMembershipAccess
      */
-    public function setHasAccessFromFilter(bool $hasAccess): void
+    public function setHasMembershipAccessFromFilter(bool $hasMembershipAccess): void
     {
-        if ($this->hasAccessToPost() == false)
+        if ($this->hasMembershipAccessToPost() == false)
         {
-            $this->setHasAccessToPost($hasAccess);
+            $this->setHasMembershipAccessToPost($hasMembershipAccess);
         }
     }
 
@@ -100,7 +100,7 @@ class Post
      */
     public function isUserPostMember(): bool
     {
-        return $this->isProtected() && $this->hasAccessToPost() && is_user_logged_in();
+        return $this->isMembershipProtected() && $this->hasMembershipAccessToPost() && is_user_logged_in();
     }
 
     /**
@@ -120,12 +120,12 @@ class Post
     public function testAccess(): void
     {
         // Test if the post is protected.
-        apply_filters(FilterHook::isPostProtected, $this);
+        apply_filters(FilterHook::isPostMembershipProtected, $this);
 
-        if ($this->isProtected()) {
-            apply_filters(FilterHook::hasAccessToPost, $this);
+        if ($this->isMembershipProtected()) {
+            apply_filters(FilterHook::hasMembershipAccessToPost, $this);
         } else {
-            $this->setHasAccessToPost(true);
+            $this->setHasMembershipAccessToPost(true);
         }
     }
 

@@ -16,6 +16,6 @@ namespace sideskift_sites\includes;
  */
 class FilterHook
 {
-    const isPostProtected = 'dk_sideskift_isPostProtected';
-    const hasAccessToPost = 'dk_sideskift_hasAccessToPost';
+    const isPostMembershipProtected = 'dk_sideskift_isPostMembershipProtected';
+    const hasMembershipAccessToPost = 'dk_sideskift_hasMembershipAccessToPost';
 }
