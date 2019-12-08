@@ -9,6 +9,7 @@
 
 namespace sideskift_sites\extensions\wp;
 use sideskift_sites\includes\FilterHook;
+use sideskift_sites\includes\PostCache;
 
 class Post
 {
@@ -18,7 +19,13 @@ class Post
      */
     private $wp_post;
 
+    /**
+     * @var bool
+     */
     private $isProtected        = false;
+    /**
+     * @var bool
+     */
     private $hasAccess          = false;
 
     /**
@@ -46,6 +53,9 @@ class Post
         $this->isProtected = $isProtected;
     }
 
+    /**
+     * @param bool $isProtected
+     */
     public function setIsProtectedFromFilter(bool $isProtected): void
     {
         if ($this->isProtected() == false)
@@ -94,10 +104,10 @@ class Post
     }
 
     /**
-     * Post constructor.
+     * Post constructor. Is protected to make sure that instance creation is always cached.
      * @param \WP_Post $wp_post
      */
-    public function __construct(\WP_Post $wp_post)
+    protected function __construct(\WP_Post $wp_post)
     {
         $this->wp_post = $wp_post;
 
@@ -117,5 +127,23 @@ class Post
         } else {
             $this->setHasAccessToPost(true);
         }
+    }
+
+    /**
+     * @param \WP_Post $wpPost
+     * @return Post
+     */
+    public static function getExtendedPost(\WP_Post $wpPost) : Post {
+
+        $post = PostCache::getInstance()->getCachedPost($wpPost);
+
+        if (!empty($post)) {
+            return $post;
+        }
+
+        $post = new Post($wpPost);
+        PostCache::getInstance()->cachePost($post);
+
+        return $post;
     }
 }

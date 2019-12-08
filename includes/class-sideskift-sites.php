@@ -112,6 +112,11 @@ class Sideskift_Sites {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sideskift-sites-i18n.php';
 
         /**
+         * include plugin cache objects
+         */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-sideskift-sites-post-cache.php';
+
+        /**
          * include plugin shortcode
          */
         require_once plugin_dir_path( dirname( __FILE__) ) . 'includes/class-sideskift-sites-shortcode.php';
