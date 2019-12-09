@@ -22,11 +22,13 @@ class Post
     /**
      * @var bool
      */
-    private $isMembershipProtected        = false;
+    private $isMembershipProtected  = false;
     /**
      * @var bool
      */
-    private $hasMembershipAccess          = false;
+    private $hasMembershipAccess    = false;
+
+    private $isPostFree             = true;
 
     /**
      * @return \WP_Post
@@ -95,6 +97,34 @@ class Post
     }
 
     /**
+     * @return bool
+     */
+    public function isPostFree(): bool
+    {
+        return $this->isPostFree;
+    }
+
+    /**
+     *
+     * @param bool $isPostFree
+     */
+    private function setIsPostFree(bool $isPostFree): void
+    {
+        $this->isPostFree = $isPostFree;
+    }
+
+    /**
+     * @param bool $isPostFree
+     */
+    public function setIsPostFreeFromFilter(bool $isPostFree): void
+    {
+        // Because a filter may revoke or give free access and a post is considered free as default
+        // Unless it is membership protected. All releventfilters are able to set this true or false.
+        $this->setIsPostFree($isPostFree);
+    }
+
+
+    /**
      * Returns if the user is a member of the post
      * @return bool
      */
@@ -124,9 +154,15 @@ class Post
 
         if ($this->isMembershipProtected()) {
             apply_filters(FilterHook::hasMembershipAccessToPost, $this);
+
+            // Consider the post to not be free, before applying filters
+            $this->setIsPostFree(false);
+
         } else {
             $this->setHasMembershipAccessToPost(true);
         }
+
+        apply_filters(FilterHook::isPostFree, $this);
     }
 
     /**

@@ -18,4 +18,5 @@ class FilterHook
 {
     const isPostMembershipProtected = 'dk_sideskift_isPostMembershipProtected';
     const hasMembershipAccessToPost = 'dk_sideskift_hasMembershipAccessToPost';
+    const isPostFree                = 'dk_sideskift_isPostFree';
 }
