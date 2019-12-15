@@ -70,7 +70,7 @@ class PostCache
      * @param int $postId
      * @return Post|null
      */
-    private function lookupPostId(int $postId) : Post {
+    private function lookupPostId(int $postId) : ?Post {
         if ($this->isPostIdCached($postId)) {
             return $this->getCacheArray()[$postId];
         }
@@ -83,7 +83,7 @@ class PostCache
      * @param \WP_Post $wp_post
      * @return Post|null
      */
-    public function getCachedPost(\WP_Post $wp_post) : Post
+    public function getCachedPost(\WP_Post $wp_post) : ?Post
     {
         if ($this->isPostIdCached($wp_post->ID)) {
             return $this->lookupPostId($wp_post->ID);

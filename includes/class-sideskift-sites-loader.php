@@ -63,8 +63,9 @@ class Sideskift_Sites_Loader {
 
 		$this->filters = array();
 
-		$this->add_filter(FilterHook::isPostMembershipProtected, '\sideskift_sites\includes\Filter', 'isPostProtected');
-		$this->add_filter(FilterHook::hasMembershipAccessToPost, '\sideskift_sites\includes\Filter', 'hasAccessToPost');
+		$this->add_filter(FilterHook::isPostMembershipProtected, '\sideskift_sites\includes\Filter', 'isPostMembershipProtected');
+		$this->add_filter(FilterHook::hasMembershipAccessToPost, '\sideskift_sites\includes\Filter', 'hasMembershipAccessToPost');
+        $this->add_filter(FilterHook::isPostFree,                '\sideskift_sites\includes\Filter', 'isPostFree');
 
         $this->shortcodes = new Sideskift_Sites_Shortcodes();
 
