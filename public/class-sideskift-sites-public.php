@@ -73,7 +73,8 @@ class Sideskift_Sites_Public {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sideskift-sites-public.css', array(), $this->version, 'all' );
+		// The CSS file is not used uncomment if needed
+		// wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/sideskift-sites-public.css', array(), $this->version, 'all' );
 
 	}
 
