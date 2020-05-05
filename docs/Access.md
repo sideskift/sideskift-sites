@@ -9,11 +9,22 @@ There are basically two questions that needs to be asked when it comes to testin
 Because content can be controlled by various membership or protection plugins, two filters has been created which code
 can hook into.
 
-These filters must react on a post, so to incapsulate data needed for the test a new class has been defined.
+These filters must react on a post, so to incapsulate the needed data for tests, a new class has been defined.
 
 ## The Sideskift Post class
+**FilePath:** /extensions/wp/class-sideskift-sites-post.php
 
-## Filter to test if content is protected
+This class encapsulates a wordpress WP-Post object. The constructor take this WP-Post object as its parameter. And
+during initialization, filters are applied to test if the user has access to the 
+
+## The Defined filters
+All Defined filters are declared in the /includes/clas-sideskift-sites-filterHook.php file as string constants. 
+
+### Filter to test if content is protected
+The sideskiftdk/Post class constructor will call this filter to test if a post is protected.
+
+#### isPostMembershipProtected
+Ths isPostMembershipProtected shold 
 
 ## Filter to test if user has access to the content
 
