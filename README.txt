@@ -3,8 +3,9 @@ Contributors: henrikbonestdk
 Donate link: https://sideskift.dk
 Tags: comments, spam
 Requires at least: 5.3.0
-Tested up to: 5.3.0
-Stable tag: 5.3.0
+Tested up to: 5.7.0
+Stable tag: 5.7.0
+Requires at least php: 7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

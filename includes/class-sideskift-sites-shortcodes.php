@@ -20,8 +20,6 @@
 class Sideskift_Sites_Shortcodes {
 
 
-
-
     //TODO: Ryd op i de her shorcode metoder.
 
     function __construct()
@@ -37,11 +35,14 @@ class Sideskift_Sites_Shortcodes {
         */
     }
 
-
+    /**
+     * @desc Register the shortcodes made available by the sideskift sites plugin
+     */
     protected function registerShortcodes() {
 
         // Generic shortcode
         add_shortcode('dk_sideskift_condition'                  , array(__CLASS__, 'renderCondition'));
+        add_shortcode('dk_sideskift_do_shortcode'               , array(__CLASS__, 'doShortCode'));
 
         // Regular shortcodes
         add_shortcode('dk_sideskift_forgot_password_url'        , array(__CLASS__, 'forgotPasswordUrl'));
@@ -51,8 +52,24 @@ class Sideskift_Sites_Shortcodes {
 
     }
 
+    /**
+     * @desc Executes the generic dk_sideskift_condition
+     * @param $atts - The name attribute is the name of a class that extends the ConditionShortCode
+     * @param null $content
+     * @return string
+     */
     static public function renderCondition($atts, $content = null) {
         return \sideskift_sites\includes\ConditionShortCode::newConditionShortCode($atts, $content);
+    }
+
+    /**
+     * @desc Executes a shortcode and returns the result of the shortcode. The shortcode in its compleetenes must be the first parameter in the atts parameter, and must be a string.
+     * @param $atts
+     * @param null $content
+     * @return string
+     */
+    static public function doShortCode($atts, $content = null) {
+        return \sideskift_sites\includes\ShortCodeExecuter::doShortCode($atts, $content);
     }
 
     static public function forgotPasswordUrl($atts, $content, $name) {

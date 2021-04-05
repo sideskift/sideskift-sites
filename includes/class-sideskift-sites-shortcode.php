@@ -9,6 +9,8 @@
 
 namespace sideskift_sites\includes;
 
+use sideskift_sites\extensions\wp\Post;
+
 /**
  * Class ShortCode
  * @package sideskift_sites\includes
@@ -80,7 +82,10 @@ class ShortCode
     }
 }
 
-
+/**
+ * Class ConditionShortCode
+ * @package sideskift_sites\includes
+ */
 class ConditionShortCode extends ShortCode {
 
     /**
@@ -99,7 +104,7 @@ class ConditionShortCode extends ShortCode {
         $nameSpace = $this->getAttributes()['namespace'];
 
         if (!empty($nameSpace)) {
-            if (substr($nameSpace) !=  '\\') {
+            if (substr($nameSpace,-1) !=  '\\') {
                 $nameSpace .= '\\';
             }
         }
@@ -213,5 +218,126 @@ class ConditionShortCode extends ShortCode {
         }
 
         return $shortCode->render();
+    }
+}
+
+/**
+ * Class ShortCodeExecuter
+ * @package sideskift_sites\includes
+ * @desc    This shortcode takse a shortcode string as arguments, and executes the shortcode and returns it, Why is this needed? It is needed in toolset conditions where you want to build a condition based upon the output of a shortcode.
+ */
+class ShortCodeExecuter extends ShortCode {
+//TODO: Virker ikke efter hensigten hvor jeg angiver shortcoden som argument i en toolset conditionall
+
+/*
+ * Fra Shortcodes.md
+ *  Bemærk at du kan ikke bare smide en shortcode i parameteren fordi Toolset og Wordpress ændrer på strengen for at finde ud af hvad der står i argumentet.
+
+Derfor skal der laves en løsning hvor du i attributter skriver Tag og Content
+
+shortcode-tag="fisk"
+shortcode-content="ACCESS"
+
+Og så skal funktionen selv pille det fra og bygge shortcode strengen ud fra indholdet og afvikle den...
+
+Du kan registrere do_shortcode som en custom function i toolset, og skrive chortcode strengen i parameteren og det vil virke som jeg egentlig har kodet her, bortset fra at der ikke er cache på det
+
+ */
+
+
+    /**
+     * @var string - the shortcode that should be rendered to an output
+     */
+    protected $shortCodeText = '';
+
+    /**
+     * @var Post - Initialized current Post object
+     */
+    private $currentPost = null;
+
+    /**
+     * @return string
+     */
+    public function getShortCodeText(): string
+    {
+        return $this->shortCodeText;
+    }
+
+    /**
+     * @param string $shortCodeText
+     */
+    public function setShortCodeText(string $shortCodeText): void
+    {
+        $this->shortCodeText = $shortCodeText;
+    }
+
+    protected function setShortCodeFromAttributes(array $atts) {
+        // The Array is expected to only hold one element which is the shortcode string.
+        if (!empty($atts[1])) {
+            $this->setShortCodeText($atts[1]);
+        }
+    }
+
+    /**
+     * @desc Check if a shortcode value is cached in the Post object.
+     * @return bool
+     */
+    private function cachedValueExists() : bool {
+        if ($this->currentPost != null) {
+            if ($this->currentPost->getCachedShortCode($this->shortCodeText) != null) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getCachedValue() {
+        if ($this->currentPost != null) {
+            if ($this->currentPost->getCachedShortCode($this->shortCodeText) != null) {
+                return $this->currentPost->getCachedShortCode($this->shortCodeText);
+            }
+        }
+
+        return '';
+    }
+
+    private function saveCachedValue(string $cachedValue) {
+        if ($this->currentPost != null) {
+            $this->currentPost->saveShortCodeCacheValue($this->getShortCodeText(), $cachedValue);
+        }
+    }
+
+    public function render()
+    {
+        $isCached = $this->cachedValueExists();
+
+        if ($isCached) {
+            return $this->getCachedValue();
+        }
+
+        $renderedValue = do_shortcode($this->getShortCodeText());
+
+        $this->saveCachedValue($renderedValue);
+
+        return $renderedValue;
+    }
+
+    public function __construct(array $atts = [], $content = null)
+    {
+        parent::__construct($atts, $content);
+
+        //Initialize the current post
+        $this->currentPost = Post::getCurrentExtendedPost();
+    }
+
+    static function doShortCode(array $atts, $content = null): string {
+
+        $shortCodeExec = new ShortCodeExecuter($atts, $content);
+
+        //Get the shortcodes from the arguments
+        $shortCodeExec->setShortCodeFromAttributes($atts);
+
+        return $shortCodeExec->render();
     }
 }

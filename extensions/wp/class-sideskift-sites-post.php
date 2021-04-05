@@ -31,6 +31,41 @@ class Post
     private $isPostFree             = true;
 
     /**
+     * @var array An associated array where the key is the shortcode string and the value is the outcome of the rendered shortcodes
+     */
+    private $shortCodeCache         = array();
+
+    /**
+     * @return array
+     */
+    private function getShortCodeCache(): array
+    {
+        return $this->shortCodeCache;
+    }
+
+    /**
+     * @desc Lookup a rendered value of a shortcode for a given key for the post.
+     * @param string $shortCodeKey
+     * @return string|null
+     */
+    public function getCachedShortCode(string $shortCodeKey) : ?string {
+        if (array_key_exists($shortCodeKey)) {
+            return $this->getShortCodeCache()[$shortCodeKey];
+        }
+
+        return null;
+    }
+
+    /**
+     * @desc Saves the value for a rendered shortcode on the post so if the shortcode is called multiple times on the same post
+     * @param string $forKey
+     * @param string $withValue
+     */
+    public function saveShortCodeCacheValue(string $forKey, string $withValue) {
+        $this->getShortCodeCache()[$forKey] = $withValue;
+    }
+
+    /**
      * @return \WP_Post
      */
     public function getWpPost(): \WP_Post
@@ -181,5 +216,19 @@ class Post
         PostCache::getInstance()->cachePost($post);
 
         return $post;
+    }
+
+    /**
+     * @desc Constructs an optional Extended Post for the current WP-Post, if it is possible.
+     * @return Post|null
+     */
+    public static function getCurrentExtendedPost() : ?Post {
+        $wpPost = get_post();
+
+        if ($wpPost != null) {
+            return Post::getExtendedPost($wpPost);
+        }
+
+        return null;
     }
 }
