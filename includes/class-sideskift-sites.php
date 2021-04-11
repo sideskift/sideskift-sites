@@ -145,6 +145,11 @@ class Sideskift_Sites {
          */
         include_once plugin_dir_path( dirname(__FILE__) ) . 'extensions/extensionsIncluder.php';
 
+        /**
+         * Include the class files organized under classes
+         */
+        include_once plugin_dir_path( dirname(__FILE__) ) . 'includes/classes/classIncluder.php';
+
 		$this->loader = new Sideskift_Sites_Loader();
 
 	}

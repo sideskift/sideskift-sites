@@ -1,4 +1,5 @@
 /**
  * All of the CSS for your public-facing functionality should be
  * included in this file.
+ * IMPORTANT: The file is not enqued. If this file gets update make sure to enqueue the file
  */
